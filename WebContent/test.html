@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="css/bootstrap-table.min.css" rel="stylesheet">
+<script src="jslib/jquery-2.2.3.min.js" type="text/javascript"></script>
+<script src="jslib/bootstrap-table.min.js" type="text/javascript"></script>
+<script src="jslib/bootstrap-table-zh-CN.min.js" type="text/javascript"></script>
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div><button id='btn' onclick="toTest()">点击测试</button></div>
+	<div>
+		<table id="tb" data-toggle='table' data-side-pagination='client' data-id-field='id' 
+		data-pagination='true' data-page-number='1' data-page-size='5' data-pagination="true"
+		data-page-list='[5,10,20]' data-url='js/data/bootstrap-data.json'
+		data-single-select="true" data-click-to-select="true" data-row-style="rowStyle">
+		<thead>
+			<tr>
+				<th data-checkbox='true'></th>
+				<th data-field='id'>id</th>
+				<th data-field='name'>名称</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+</body>
+<script type="text/javascript">
+	function toTest(){
+		var opts = $("#tb").bootstrapTable('getOptions');
+		var rows = $("#tb").bootstrapTable('getSelections');
+		console.log(rows);
+		console.log(opts);
+		console.log('======当前选中记录是=============');
+		console.log(rows[opts.pageNumber-1]);
+	}
+	$(function(){
+// 		var data = [{
+// 			id:1,
+// 			name:'wangdes'
+// 		},{
+// 			id:2,
+// 			name:'goupid'
+// 		}];
+// 		$('#tb').bootstrapTable('load',data);
+	})
+</script>
+</html>
