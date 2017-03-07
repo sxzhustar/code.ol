@@ -10,8 +10,8 @@ function zoom(type){
 		zoom -= 1;
 		break;
 	case 'default':
-		zoom = 13;
-		view.setCenter(ol.proj.transform([113.37,23.13],'EPSG:4326','EPSG:3857'))
+		zoom = 10;
+		view.setCenter([113.37,23.13])
 		break;
 	}
 	view.setZoom(zoom);
@@ -52,6 +52,16 @@ function init(){
     	coordinateFormat:ol.coordinate.createStringXY(3),
     	target:document.getElementById('pos')
     });
+    var scale = new ol.control.ScaleLine();
+    var zoomSlider = new ol.control.ZoomSlider();
+    var overView = new ol.control.OverviewMap({
+    	view:new ol.View({projection:'EPSG:4326'})
+    });
+    var fullScreen = new ol.control.FullScreen();
+    var zoomToExt = new ol.control.ZoomToExtent({
+    	extent:[73,18,135,54]
+    });
+    var rotate = new ol.control.Rotate();
     
     map = new ol.Map({
     	target:'map',
@@ -67,7 +77,7 @@ function init(){
     	controls:new ol.control.defaults({
             attributionOptions: {collapsible: false},
             zoom:true
-            }).extend([posCtrl])
+            }).extend([posCtrl,scale,zoomSlider,overView,fullScreen,zoomToExt,rotate])
     });
     
     
