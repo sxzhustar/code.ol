@@ -80,5 +80,4 @@ function init(){
             }).extend([posCtrl,scale,zoomSlider,overView,fullScreen,zoomToExt,rotate])
     });
     
-    
 }
