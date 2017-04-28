@@ -12,10 +12,13 @@
 </head>
 <body>
 	<div><button id='btn' onclick="toTest()">点击测试</button></div>
+	<label  class="buttona buttonb">点我测试</label><br>
+	<textarea id='area'>as</textarea>
+	<button>sdf</button>
 	<div>
 		<table id="tb" data-toggle='table' data-side-pagination='client' data-id-field='id' 
 		data-pagination='true' data-page-number='1' data-page-size='5' data-pagination="true"
-		data-page-list='[5,10,20]' data-url='js/data/bootstrap-data.json'
+		data-page-list='[5,10,20]'
 		data-single-select="true" data-click-to-select="true" data-row-style="rowStyle">
 		<thead>
 			<tr>
@@ -37,14 +40,13 @@
 		console.log(rows[opts.pageNumber-1]);
 	}
 	$(function(){
-// 		var data = [{
-// 			id:1,
-// 			name:'wangdes'
-// 		},{
-// 			id:2,
-// 			name:'goupid'
-// 		}];
-// 		$('#tb').bootstrapTable('load',data);
+		$(".buttona.buttonb").click(function(){
+			var area = document.getElementById('area');
+			console.log(area);
+			console.log(area);
+			alert(area.value);
+			alert(area.innerHTML);
+		});
 	})
 </script>
 </html>
