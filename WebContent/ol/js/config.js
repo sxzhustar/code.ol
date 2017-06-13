@@ -9,9 +9,12 @@ var cfg={
 			   		{"id":6,"name":"行政区划(WMS)","en_name":"gdxzqh","lType":"esriwms","type":"n","url":"https://localhost:6443/arcgis/services/GD_WMTS/MapServer/WMSServer","parent":1},
 			   		{"id":3,"name":"高速路(WFS)","en_name":"highway","lType":"esriwfs","type":"n","url":"https://localhost:6443/arcgis/services/highway/MapServer/WFSServer","parent":1},
 			   		{"id":4,"name":"GEOSERVER系列","lType":"fs","type":"r","parent":0},
-			   		{"id":7,"name":"高速路(WFS)","en_name":"highway","lType":"geowfs","type":"n","url":"http://localhost:8089/geoserver/test/ows","parent":4},
-			   		{"id":8,"name":"路网(WMS)","en_name":"highway","lType":"geowms","type":"n","url":"http://localhost:8089/geoserver/test/wms","parent":4},
-			   		{"id":9,"name":"路网(WMTS)","en_name":"highway","lType":"geowmts","type":"n","url":"http://localhost:8089/geoserver/gwc/service/wmts","parent":4}
+			   		{"id":7,"name":"高速路(WFS)","en_name":"highway","lType":"geowfs","type":"n","url":"http://localhost:8080/geoserver/test/ows","parent":4},
+			   		{"id":8,"name":"高速(WMS)","en_name":"highway","lType":"geowms","type":"n","url":"http://localhost:8080/geoserver/test/wms","parent":4},
+			   		{"id":9,"name":"高速(WMTS)","en_name":"highway","lType":"geowmts","type":"n","url":"http://localhost:8080/geoserver/gwc/service/wmts","parent":4},
+			   		{"id":10,"name":"佛山公交路网(WFS)","en_name":"fs_bus","lType":"geowfs","type":"n","url":"http://localhost:8080/geoserver/test/ows","parent":4},
+			   		{"id":10,"name":"佛山公交路网(WMS)","en_name":"fs_bus","lType":"geowms","type":"n","url":"http://localhost:8080/geoserver/test/wms","parent":4},
+			   		{"id":11,"name":"佛山公交(VT)","en_name":"fs_bus","lType":"vec_tiles","type":"n","url":"http://localhost:8080/geoserver/test/ows","parent":4}
 			   	],
 			   	getChildren:function(object){
 					return this.query({parent:object.id});

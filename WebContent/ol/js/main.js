@@ -194,8 +194,8 @@ function loadLyr(item,node){
 					source:new ol.source.Vector({
 						url:function(extent,resolution,projection){
 							extent = ol.proj.transformExtent(extent,'EPSG:3857','EPSG:4326');
-							return 'http://localhost:8089/geoserver/test/ows?'
-							+'service=wfs&version=1.0.0&request=getfeature&typename=test:highway&'
+							return 'http://localhost:8080/geoserver/test/ows?'
+							+'service=wfs&version=1.0.0&request=getfeature&typename=test:'+item.en_name+'&'
 							+'srsName=EPSG:4326&outputFormat=application/json&bbox=' + extent.join(',')
 						},
 						format:new ol.format.GeoJSON(),
@@ -217,12 +217,12 @@ function loadLyr(item,node){
 					source:new ol.source.TileWMS({
 						extent:[112,22,114,24],
 						params:{
-							'LAYERS':'test:highway',
+							'LAYERS':'test:' + item.en_name,
 							'VERSION':'1.1.0',
-							'BBOX':[113.029319763184,22.7097873687744,113.95068359375,23.7140617370605],
-							'CRS':'EPSG:4326',
-							'WIDTH':704,
-							'HEIGHT':768
+//							'BBOX':[113.029319763184,22.7097873687744,113.95068359375,23.7140617370605],
+							'CRS':'EPSG:4326'
+//							'WIDTH':704,
+//							'HEIGHT':768
 						},
 						projection:"EPSG:4326",
 						url:url
@@ -236,7 +236,8 @@ function loadLyr(item,node){
 				var maxExtent = [109.66140013800003,20.22346267200004,117.3041534420001,25.520298004000036];
 				var maxResolution = ol.extent.getWidth(maxExtent) / 256;
 				for(var i = 0;i <= 3;i++){
-					matrixIds[i] = 'grid_gdxzqh:'+i;
+//					matrixIds[i] = 'grid_gdxzqh:'+i;
+					matrixIds[i] = 'EPSG:4326:'+i;
 					resolutions[i] = maxResolution / Math.pow(2,i);
 				}
 				var tileGrid = new ol.tilegrid.WMTS({
@@ -250,14 +251,38 @@ function loadLyr(item,node){
 						url:url,
 						layer:'test:gdxzqh',
 						tileGrid:tileGrid,
-						matrixSet:'grid_gdxzqh',
+//						matrixSet:'grid_gdxzqh',
+						matrixSet:'EPSG:4326',
 						format:'image/png',
 						projection:'EPSG:4326'
 					}),
 					name:item.en_name
 				})
+			}else if(item.lType = 'vec_tiles'){
+				var layerProjection = '4326';
+				var source = new ol.source.VectorTile({
+					tileGrid:ol.tilegrid.createXYZ({
+						maxZoom:22
+					}),
+					tilePixelRatio:1,
+					format:new ol.format.MVT(),
+					url:'http://127.0.0.1:8080/geoserver/gwc/service/tms/1.0.0/'
+						+ 'test:' + item.en_name + '@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf'
+//					format:new ol.format.GeoJSON(),
+//					tileUrlFunction: function(tileCoord){
+//						console.log(tileCoord);
+//		                return 'http://localhost:8080/geoserver/gwc/service/tms/1.0.0/'
+//		                +'test:'+item.en_name+'@EPSG:'+layerProjection+'@geojson/'+(tileCoord[0]-1)
+//		                + '/'+tileCoord[1] + '/' + (Math.pow(2,tileCoord[0]-1)+tileCoord[2]) + '.geojson';
+//
+//		            },
+				});
+				lyr = new ol.layer.VectorTile({
+					source:source,
+				});
 			}
 			lyr.name = item.name;
+			lyr.en_name = item.en_name;
 			lyr.node = node;
 			map.addLayer(lyr);
 			node.lyr = lyr;
@@ -371,14 +396,14 @@ function query(){
 	var filter = queryMdl.getFilter(expression);
 	
 	var fRequest = new ol.format.WFS().writeGetFeature({
-		featureNS:'http://localhost:8089/geoserver/test',
+		featureNS:'http://localhost:8080/geoserver/test',
 		featurePrefix:'test',
 		featureTypes:[featureType],
 		srsName:'EPSG:3857',
 		outputFormat:'application/json',
 		filter:filter
 	});
-	var url = 'http://localhost:8089/geoserver/test/wfs';
+	var url = 'http://localhost:8080/geoserver/test/wfs';
 	queryMdl.fetchInfo(fRequest,url,function(features){
 		var source = tmpLyr.getSource();
 		//获取样式

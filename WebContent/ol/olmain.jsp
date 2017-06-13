@@ -58,6 +58,7 @@
 <script type="text/javascript" src="js/plot.js"></script>
 <script type="text/javascript" src="js/edit.js"></script>
 <script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript" src="js/track.js"></script>
 <script type="text/javascript">
 $(function(){
 	//定位事件
@@ -108,7 +109,7 @@ $(function(){
 	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" id='main'>
 		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'"
 		 style="height:70px;border-bottom:solid 1px #B7BBB9;background:#CDE6FF">
-		 	<div style="text-align:center;color:#5050FB;font:bold 1.5em arial;line-height:70px;">二维基础数据管理平台</div>
+		 	<div style="text-align:center;color:#5050FB;font:bold 1.5em arial;line-height:70px;"></div>
 		 </div>
 		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left',splitter:'true'" title='fuck'
 		 style="width:300px;border-right:solid 1px #B7BBB9;margin:1;padding:0;">
@@ -187,6 +188,11 @@ $(function(){
 		 			<div data-dojo-type="dijit/form/Button" onClick="Edit('delete');">删除</div><br>
 		 		</div>
 		 		<div data-dojo-type='dijit/layout/ContentPane' title='空间分析'></div>
+		 		<div data-dojo-type='dijit/layout/ContentPane' title='轨迹回放'>
+		 			<input type="button" id='btnSelRoad' value="点击选择道路">
+		 			<input type="button" id='btnPlay' value='播放'>
+		 			速度：<input type="text" id='txtSpeed' value='20'>
+		 		</div>
 		 	</div>
 		 </div>
 		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'" style="overflow:hidden;">
