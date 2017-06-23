@@ -37,10 +37,10 @@ li{display:inline-block;line-height: 36px;width:80px;border-left:solid 1px;borde
 ul li{cursor:pointer}
 #map{background:#FFF;opacity:1;filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);}
 </style>
-<script src="jslib/jquery-2.2.3.min.js" type="text/javascript"></script>
-<script src="http://localhost:8000/arcgis_js_api/library/3.18/3.18/init.js"></script>
-<link href="http://localhost:8000/arcgis_js_api/library/3.18/3.18/esri/css/esri.css" rel="stylesheet">
-<link href="http://localhost:8000/arcgis_js_api/library/3.18/3.18/dijit/themes/claro/claro.css" rel="stylesheet">
+<script src="../jslib/jquery-2.2.3.min.js" type="text/javascript"></script>
+<script src="http://localhost:8000/library/4.3/4.3/init.js"></script>
+<link href="http://localhost:8000/library/4.3/4.3/esri/css/main.css" rel="stylesheet">
+<link href="http://localhost:8000/library/4.3/4.3/dijit/themes/claro/claro.css" rel="stylesheet">
 </head>
 <body>
 	<div>
@@ -74,21 +74,21 @@ ul li{cursor:pointer}
 	function reset(){
 		map.setMapCursor('auto');
 	}
-	require([ "esri/map", "esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/FeatureLayer",
-	        "esri/toolbars/draw", "esri/toolbars/edit", "dojo/_base/event","esri/tasks/GeometryService",
-	        "dojo/dom-construct","dijit/form/Button","dojo/_base/array",
-	        "esri/tasks/query","esri/layers/FeatureLayer",
-			"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
-			"esri/symbols/SimpleFillSymbol", 
-			"esri/dijit/editing/TemplatePicker", 
-			"dojo/_base/array", "esri/geometry/Point", 
-			"dijit/form/Button", "dojo/_base/lang", "esri/graphic",
-			"esri/dijit/AttributeInspector",
-			"dojo/domReady!" ],function(Map,ArcGISDynamicMapServiceLayer,FeatureLayer,Draw,Edit,event,GeometryService,domConstruct,
+	require([ "esri/map", "esri/layers/MapImageLayer","esri/layers/FeatureLayer",
+// 	        "esri/toolbars/draw", "esri/toolbars/edit", "dojo/_base/event","esri/tasks/GeometryService",
+// 	        "dojo/dom-construct","dijit/form/Button","dojo/_base/array",
+// 	        "esri/tasks/query","esri/layers/FeatureLayer",
+// 			"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
+// 			"esri/symbols/SimpleFillSymbol", 
+// 			"esri/dijit/editing/TemplatePicker", 
+// 			"dojo/_base/array", "esri/geometry/Point", 
+// 			"dijit/form/Button", "dojo/_base/lang", "esri/graphic",
+// 			"esri/dijit/AttributeInspector",
+			"dojo/domReady!" ],function(Map,MapImageLayer,FeatureLayer,Draw,Edit,event,GeometryService,domConstruct,
 					Button,arrayUtil){
-		esriConfig.defaults.io.proxyUrl = "http://localhost:8080/Java/proxy.jsp";
-        esriConfig.defaults.io.alwaysUseProxy= false;
-		esriConfig.defaults.geometryService = new GeometryService("https://localhost:6443/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+// 		esriConfig.defaults.io.proxyUrl = "http://localhost:8080/Java/proxy.jsp";
+//         esriConfig.defaults.io.alwaysUseProxy= false;
+// 		esriConfig.defaults.geometryService = new GeometryService("https://localhost:6443/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 		map = new Map("map",{
 		    logo:false,
             zoom: 7,
@@ -99,7 +99,7 @@ ul li{cursor:pointer}
 		  });
 		var base = "http://localhost:6080/arcgis/rest/services/%E5%B9%BF%E4%B8%9C%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92/MapServer";
 // 		var roads = "https://localhost:6443/arcgis/rest/services/%E5%B9%BF%E5%B7%9E%E5%B8%82%E9%AB%98%E9%80%9F%E8%B7%AF/FeatureServer/0";
-        var baseLyr = new ArcGISDynamicMapServiceLayer(base,{id:'base0'});
+        var baseLyr = new MapImageLayer(base,{id:'base0'});
 //         var featureLyr = new FeatureLayer(roads,{id:'feaLyr',outFields:'*'});
 //         featureLyr.on('click',updateEdit);
         map.addLayers([baseLyr]);

@@ -1,24 +1,23 @@
 /*****轨迹回放******/
 var trackTool;
-var style = {
+var styles = {
 	'geoMark':new ol.style.Style({
-		image:new ol.style.Circle({
-			radius:5,
-			fill:new ol.style.Fill({color:'blue'}),
-			stroke:new ol.style.Stroke({
-				color:'red',
-				width:2
-			})
+		image:new ol.style.Icon({
+			src:'../img/bike.png'
 		})
 	}),
 	'point':new ol.style.Style({
-		image:new ol.style.Circle({
-			radius:5,
-			fill:new ol.style.Fill({color:'red'}),
-			stroke:new ol.style.Stroke({
-				color:'blue',
-				width:2
-			})
+//		image:new ol.style.Circle({
+//			radius:5,
+//			fill:new ol.style.Fill({color:'red'}),
+//			stroke:new ol.style.Stroke({
+//				color:'blue',
+//				width:2
+//			})
+//		})
+		image:new ol.style.Icon({
+			src:'../img/bike.png'
+//			rotation:Math.PI/2
 		})
 	})
 }
@@ -46,6 +45,9 @@ $(function(){
 		var coors = trackTool.coors;
 		var speed = Number($('#txtSpeed').val());
 		var begin = new Date();
+		var markStyle = styles['geoMark'];
+		console.log(markStyle);
+		var preIndx;//上一个点
 		map.on('postcompose',function(t){
 			var context = t.vectorContext;
 			var now = t.frameState.time;
@@ -53,12 +55,25 @@ $(function(){
 			var stamp = now - begin;
 			var index = speed * stamp / 1000;
 			index = Math.round(index);
-			console.log(index);
+			preIndx = preIndx ? preIndx : 0;
 			
 			if(index >= coors.length) return;
-			var currentP = coors[index];
+			var currentP = coors[index];//当前点
+			var lastP = coors[preIndx];//上一个点
+			console.log(currentP);
+			console.log(lastP);
+			var val = (currentP[0] - lastP[0]) / (currentP[1] - lastP[1]);
+			var rotate = Math.atan(val);
+			console.log(rotate);
+			console.log('==========');
+
+			if(rotate){
+				markStyle.getImage().setRotation(rotate);
+			}
+			preIndx = index;//保存上一个点索引
+			
 			var curFeature = new ol.Feature(new ol.geom.Point(currentP));
-			context.drawFeature(curFeature,style['geoMark']);
+			context.drawFeature(curFeature,markStyle);
 			map.render();
 		});
 		map.render();
@@ -67,7 +82,7 @@ $(function(){
 
 ol.track = function(opt){
 	this.map = opt.map_;
-	this.select = new ol.interaction.Select();
+	this.select = new ol.interaction.Select({multi:true});
 	this.dragbox = new ol.interaction.DragBox();
 	this.map.addInteraction(this.select);
 	this.map.addInteraction(this.dragbox);
@@ -77,7 +92,9 @@ ol.track = function(opt){
 }
 ol.track.prototype.doSelect = function(){
 	if(!this.select){
-		this.select = new ol.interaction.Select();
+		this.select = new ol.interaction.Select({
+			multi:true
+		});
 		this.map.addInteraction(this.select);
 	}
 	if(!this.dragbox){
@@ -93,12 +110,13 @@ ol.track.prototype.doSelect = function(){
 			return false;
 		}
 	});
-	console.log(test);
+	console.log(vecLyr);
 	var source = vecLyr.getSource();
 	this.dragbox.on('boxend',function(e){
 		var extent = this.dragbox.getGeometry().getExtent();
 		source.forEachFeatureIntersectingExtent(extent,function(feature){
 			selFeatures.push(feature);
+			console.log(feature);
 		});
 		this.formatCoord();
 	},this);
@@ -108,13 +126,15 @@ ol.track.prototype.doSelect = function(){
 ol.track.prototype.formatCoord = function(){
 	var features = this.select.getFeatures().getArray();
 	if(!features || features.length < 1) return;
-	
-	var line = features[0];
-	var geo = line.getGeometry();
-	var coors = geo.flatCoordinates;
+	//选取内的所有线段片段连成一连续线条
 	var coordinates = [];
-	for(var i = 0;i < coors.length;i+=2){
-		coordinates.push([coors[i],coors[i+1]]);
+	for(var k = 0;k < features.length;k++){
+		var line = features[k];
+		var geo = line.getGeometry();
+		var coors = geo.flatCoordinates;
+		for(var i = 0;i < coors.length;i+=2){
+			coordinates.push([coors[i],coors[i+1]]);
+		}
 	}
 	this.coors = coordinates;
 	//渲染起点
@@ -126,7 +146,7 @@ ol.track.prototype.formatCoord = function(){
 			})]
 		}),
 		style:function(feature){
-			return style[feature.get('type')];
+			return styles[feature.get('type')];
 		}
 	})
 	this.map.addLayer(markLyr);
